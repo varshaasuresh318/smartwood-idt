@@ -1,0 +1,227 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>SmartWood – Artisan Platform</title>
+  <style>
+    body {
+      margin: 0;
+      font-family: Arial, Helvetica, sans-serif;
+      background: linear-gradient(to right, #f7f2ec, #efe3d3);
+    }
+    header {
+      background-color: #5a3e1b;
+      color: white;
+      padding: 20px;
+      text-align: center;
+      font-size: 26px;
+    }
+    nav {
+      background-color: #8b683d;
+      padding: 10px;
+      text-align: center;
+    }
+    nav button {
+      margin: 5px;
+      padding: 8px 14px;
+      background-color: white;
+      color: #5a3e1b;
+      border: none;
+      border-radius: 20px;
+      cursor: pointer;
+      font-weight: bold;
+    }
+    nav button:hover { background-color: #f1d9b5; }
+    .section {
+      display: none;
+      padding: 20px;
+    }
+    .active { display: block; }
+    .cards {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+      gap: 20px;
+    }
+    .card {
+      background-color: white;
+      border-radius: 15px;
+      padding: 20px;
+      box-shadow: 0 4px 10px rgba(0,0,0,0.15);
+    }
+    h3 { margin-top: 0; color: #5a3e1b; }
+    button.action {
+      margin-top: 10px;
+      padding: 8px 12px;
+      background-color: #5a3e1b;
+      color: white;
+      border: none;
+      border-radius: 8px;
+      cursor: pointer;
+    }
+    input, select {
+      width: 100%;
+      padding: 6px;
+      margin-top: 5px;
+    }
+    ul { padding-left: 18px; }
+    footer {
+      text-align: center;
+      padding: 12px;
+      font-size: 13px;
+      color: #333;
+    }
+  </style>
+</head>
+<body>
+
+<header>
+  SmartWood – Empowering Wood Carving Artisans
+</header>
+
+<nav>
+  <button onclick="showSection('dashboard')">Dashboard</button>
+  <button onclick="showSection('designs')">Designs</button>
+  <button onclick="showSection('orders')">Orders</button>
+  <button onclick="showSection('insights')">Insights</button>
+  <button onclick="showSection('waste')">Sustainability</button>
+</nav>
+
+<!-- Dashboard -->
+<div id="dashboard" class="section active">
+  <!-- Hero Section -->
+  <div class="card" style="margin-bottom:20px;">
+  <h3>About SmartWood</h3>
+  <p>SmartWood is a digital platform designed to support traditional wood carving artisans by integrating modern technology with craftsmanship. The platform helps artisans manage designs, track orders, analyze sales performance, and reduce wood waste efficiently.</p>
+</div>
+
+  <!-- Feature Cards -->
+  <div class="cards">
+    <div class="card"><h3>Total Designs</h3><p id="designCount">0</p></div>
+    <div class="card"><h3>Total Orders</h3><p id="orderCount">0</p></div>
+    <div class="card"><h3>Estimated Income</h3><p>₹<span id="income">0</span></p></div>
+  </div>
+
+  <!-- Info Section -->
+  <div class="cards" style="margin-top:20px;">
+    <div class="card">
+      <h3><h3>Design Management</h3>
+      <p>Allows artisans to digitally upload, store, and manage wood carving designs for easy access and reuse.</p>
+    </div>
+    <div class="card">
+      <h3>Order Management</h3>
+      <p>Helps artisans manage customer orders digitally, improving accuracy and reducing manual record keeping.</p>
+    </div>
+    <div class="card">
+      <h3>Sales Analysis</h3>
+      <p>Provides basic insights on orders and estimated income to support better business planning.</p>
+    </div>
+    <div class="card">
+      <h3>Sustainable Practices</h3>
+      <p>Suggests effective methods to reuse wood waste and minimize raw material loss.</p>
+    </div>
+  </div>
+</div>
+
+<!-- Designs -->
+<div id="designs" class="section">
+  <div class="card">
+    <h3>Upload Design</h3>
+    <input type="file" id="designUpload" />
+    <button class="action" onclick="uploadDesign()">Upload</button>
+    <ul id="designList"></ul>
+  </div>
+</div>
+
+<!-- Orders -->
+<div id="orders" class="section">
+  <div class="card">
+    <h3>Smart Orders</h3>
+    <input type="text" id="orderName" placeholder="Customer Name" />
+    <select id="orderType">
+      <option>Wall Panel</option>
+      <option>Statue</option>
+      <option>Furniture</option>
+    </select>
+    <button class="action" onclick="addOrder()">Add Order</button>
+    <ul id="orderList"></ul>
+  </div>
+</div>
+
+<!-- Insights -->
+<div id="insights" class="section">
+  <div class="card">
+    <h3>Sales Insights</h3>
+    <p>Total Orders: <span id="totalOrders">0</span></p>
+    <p>Estimated Revenue: ₹<span id="revenue">0</span></p>
+    <button class="action" onclick="calculateSales()">Refresh</button>
+  </div>
+</div>
+
+<!-- Waste -->
+<div id="waste" class="section">
+  <div class="card">
+    <h3>Waste Reduction Advisor</h3>
+    <select id="wasteType">
+      <option>Small Pieces</option>
+      <option>Medium Blocks</option>
+      <option>Fine Dust</option>
+    </select>
+    <button class="action" onclick="suggestReuse()">Get Suggestion</button>
+    <p id="wasteSuggestion"></p>
+  </div>
+</div>
+
+<footer>© 2025 SmartWood | Enhanced Interactive Prototype</footer>
+
+<script>
+  let designs = [];
+  let orders = [];
+
+  function showSection(id) {
+    document.querySelectorAll('.section').forEach(s => s.classList.remove('active'));
+    document.getElementById(id).classList.add('active');
+  }
+
+  function uploadDesign() {
+    const file = document.getElementById('designUpload').files[0];
+    if (file) {
+      designs.push(file.name);
+      const li = document.createElement('li');
+      li.innerText = file.name;
+      document.getElementById('designList').appendChild(li);
+      document.getElementById('designCount').innerText = designs.length;
+    }
+  }
+
+  function addOrder() {
+    const name = document.getElementById('orderName').value;
+    const type = document.getElementById('orderType').value;
+    if (name) {
+      orders.push({ name, type });
+      const li = document.createElement('li');
+      li.innerText = name + ' – ' + type;
+      document.getElementById('orderList').appendChild(li);
+      document.getElementById('orderCount').innerText = orders.length;
+      document.getElementById('income').innerText = orders.length * 2500;
+      document.getElementById('orderName').value = '';
+    }
+  }
+
+  function calculateSales() {
+    document.getElementById('totalOrders').innerText = orders.length;
+    document.getElementById('revenue').innerText = orders.length * 2500;
+  }
+
+  function suggestReuse() {
+    const map = {
+      'Small Pieces': 'Create keychains or toys',
+      'Medium Blocks': 'Make frames or candle holders',
+      'Fine Dust': 'Use for incense sticks or compost'
+    };
+    document.getElementById('wasteSuggestion').innerText = map[document.getElementById('wasteType').value];
+  }
+</script>
+
+</body>
+</html>
