@@ -125,27 +125,7 @@
     </div>
   </div>
 </div>
- <!-- Carpenter -->
-<div id="carpenter" class="section">
-  <div class="card" style="max-width:800px;margin:auto;">
-    <h3>About the Carpenter</h3>
 
-    <p>
-      Name: <strong>Sreekanth</strong><br>
-      Experience: <strong>10+ Years</strong><br>
-      Specialization: <strong>Traditional Wood Carving, Furniture, Sculptures</strong>
-    </p>
-
-    <p>
-      Sreekanth is a skilled wood carving artisan with deep knowledge of
-      traditional craftsmanship passed down through generations. He specializes
-      in custom wooden furniture, decorative panels, and artistic sculptures.
-      SmartWood helps him manage designs, track orders, and reduce wood waste
-      efficiently using digital tools.
-    </p>
-  </div>
-</div>
-  
 
 <!-- Designs -->
 <div id="designs" class="section">
@@ -197,6 +177,26 @@
   </div>
 </div>
 
+  <div id="carpenter" class="section">
+  <div class="card" style="max-width:800px;margin:auto;">
+    <h3>About the Carpenter</h3>
+
+    <p>
+      Name: <strong>Sreekanth</strong><br>
+      Experience: <strong>10+ Years</strong><br>
+      Specialization: <strong>Traditional Wood Carving, Furniture, Sculptures</strong>
+    </p>
+
+    <p>
+      Sreekanth is a skilled wood carving artisan with deep knowledge of
+      traditional craftsmanship passed down through generations. He specializes
+      in custom wooden furniture, decorative panels, and artistic sculptures.
+      SmartWood helps him manage designs, track orders, and reduce wood waste
+      efficiently using digital tools.
+    </p>
+  </div>
+</div>
+
 <footer>© 2025 SmartWood | Enhanced Interactive Prototype</footer>
 
 <script>
@@ -242,8 +242,7 @@ function uploadDesign() {
   };
 
   reader.readAsDataURL(file);
- }
-  }
+}
 
   function addOrder() {
     const name = document.getElementById('orderName').value;
@@ -261,7 +260,7 @@ function uploadDesign() {
 
   function calculateSales() {
     document.getElementById('totalOrders').innerText = orders.length;
-    document.getElementById('revenue').innerText = orders.length * 5000-6000;
+    document.getElementById('revenue').innerText = orders.length * 5000;
   }
 
   function suggestReuse() {
@@ -276,5 +275,6 @@ function uploadDesign() {
 
 </body>
 </html>
+
 
 
