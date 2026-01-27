@@ -3,6 +3,8 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+      <div style="background-image: url('https://www.pinterest.com/pin/186055028345762897/'); background-size: cover; height: 300px;">
+
   <title>SmartWood – Artisan Platform</title>
   <style>
     body {
@@ -85,6 +87,7 @@
   <button onclick="showSection('orders')">Orders</button>
   <button onclick="showSection('insights')">Insights</button>
   <button onclick="showSection('waste')">Sustainability</button>
+  <button onclick="showSection('carpenter')">Carpenter</button>
 </nav>
 
 <!-- Dashboard -->
@@ -122,6 +125,27 @@
     </div>
   </div>
 </div>
+ <!-- Carpenter -->
+<div id="carpenter" class="section">
+  <div class="card" style="max-width:800px;margin:auto;">
+    <h3>About the Carpenter</h3>
+
+    <p>
+      Name: <strong>Sreekanth</strong><br>
+      Experience: <strong>10+ Years</strong><br>
+      Specialization: <strong>Traditional Wood Carving, Furniture, Sculptures</strong>
+    </p>
+
+    <p>
+      Sreekanth is a skilled wood carving artisan with deep knowledge of
+      traditional craftsmanship passed down through generations. He specializes
+      in custom wooden furniture, decorative panels, and artistic sculptures.
+      SmartWood helps him manage designs, track orders, and reduce wood waste
+      efficiently using digital tools.
+    </p>
+  </div>
+</div>
+  
 
 <!-- Designs -->
 <div id="designs" class="section">
@@ -129,7 +153,7 @@
     <h3>Upload Design</h3>
     <input type="file" id="designUpload" />
     <button class="action" onclick="uploadDesign()">Upload</button>
-    <ul id="designList"></ul>
+    <div id="designList"></div>
   </div>
 </div>
 
@@ -142,6 +166,7 @@
       <option>Wall Panel</option>
       <option>Statue</option>
       <option>Furniture</option>
+      <option>Decor Items</option>
     </select>
     <button class="action" onclick="addOrder()">Add Order</button>
     <ul id="orderList"></ul>
@@ -182,16 +207,42 @@
     document.querySelectorAll('.section').forEach(s => s.classList.remove('active'));
     document.getElementById(id).classList.add('active');
   }
+function uploadDesign() {
+  const fileInput = document.getElementById("designUpload");
+  const file = fileInput.files[0];
 
-  function uploadDesign() {
-    const file = document.getElementById('designUpload').files[0];
-    if (file) {
-      designs.push(file.name);
-      const li = document.createElement('li');
-      li.innerText = file.name;
-      document.getElementById('designList').appendChild(li);
-      document.getElementById('designCount').innerText = designs.length;
-    }
+  if (!file) return;
+
+  if (!file.type.startsWith("image/")) {
+    alert("Please upload an image file (jpg, png)");
+    return;
+  }
+
+  const reader = new FileReader();
+  reader.onload = function (e) {
+    const container = document.createElement("div");
+    container.style.marginTop = "10px";
+
+    const img = document.createElement("img");
+    img.src = e.target.result;
+    img.style.width = "100%";
+    img.style.maxWidth = "200px";
+    img.style.borderRadius = "10px";
+    img.style.boxShadow = "0 4px 8px rgba(0,0,0,0.2)";
+
+    const name = document.createElement("p");
+    name.innerText = file.name;
+    name.style.fontSize = "14px";
+
+    container.appendChild(img);
+    container.appendChild(name);
+
+    document.getElementById("designList").appendChild(container);
+    document.getElementById("designCount").innerText++;
+  };
+
+  reader.readAsDataURL(file);
+ }
   }
 
   function addOrder() {
@@ -210,7 +261,7 @@
 
   function calculateSales() {
     document.getElementById('totalOrders').innerText = orders.length;
-    document.getElementById('revenue').innerText = orders.length * 2500;
+    document.getElementById('revenue').innerText = orders.length * 5000-6000;
   }
 
   function suggestReuse() {
@@ -225,3 +276,4 @@
 
 </body>
 </html>
+
