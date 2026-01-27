@@ -6,6 +6,10 @@
       
 
   <title>SmartWood – Artisan Platform</title>
+  <p style="font-size:14px;opacity:0.9;margin-top:8px;">
+  Bridging Traditional Craftsmanship with Digital Innovation
+</p>
+
   <style>
     body {
       margin: 0;
@@ -131,7 +135,7 @@
 </div>
 
  <div id="carpenter" class="section">
-  <div class="card" style="max-width:800px;margin:auto;">
+  <div class="card">
     <h3>About the Carpenter</h3>
 
     <p>
@@ -145,6 +149,10 @@
       in custom wooden furniture, decorative panels, and artistic sculptures.
       SmartWood helps him manage designs, track orders, and reduce wood waste
       efficiently using digital tools.
+      Location: Karnataka<br>
+      Shop:<strong>Sri Sai Wood Carving Works</strong><br>
+      Location: Shop No 75 Purnapragnya Layout, 1st Cross, Road, opposite Kasturi School, Arehalli, Bengaluru, Karnataka 560061<br>
+
     </p>
   </div>
 </div>
@@ -154,7 +162,7 @@
     <h3>Upload Design</h3>
     <input type="file" id="designUpload" />
     <button class="action" onclick="uploadDesign()">Upload</button>
-    <div id="designList"></div>
+    <div id="designList" style="display:flex;flex-wrap:wrap;gap:15px;"></div>
   </div>
 </div>
 
@@ -164,10 +172,10 @@
     <h3>Smart Orders</h3>
     <input type="text" id="orderName" placeholder="Customer Name" />
     <select id="orderType">
-      <option>Wall Panel</option>
-      <option>Statue</option>
-      <option>Furniture</option>
-      <option>Decor Items</option>
+      <option>Wall Panel-4000</option>
+      <option>Statue-5000</option>
+      <option>Furniture-10000</option>
+      <option>Decor Items-(based on design)</option>
     </select>
     <button class="action" onclick="addOrder()">Add Order</button>
     <ul id="orderList"></ul>
@@ -180,6 +188,7 @@
     <h3>Sales Insights</h3>
     <p>Total Orders: <span id="totalOrders">0</span></p>
     <p>Estimated Revenue: ₹<span id="revenue">0</span></p>
+    <p>Most Ordered Product: <span id="topItem">-</span></p>
     <button class="action" onclick="calculateSales()">Refresh</button>
   </div>
 </div>
@@ -188,6 +197,10 @@
 <div id="waste" class="section">
   <div class="card">
     <h3>Waste Reduction Advisor</h3>
+    <p style="font-size:13px;color:#555;">
+  Encouraging eco-friendly practices to reduce wood waste and promote sustainability.
+</p>
+
     <select id="wasteType">
       <option>Small Pieces</option>
       <option>Medium Blocks</option>
@@ -204,6 +217,12 @@
 <script>
   let designs = [];
   let orders = [];
+  const priceMap = {
+  "Wall Panel": 4000,
+  "Statue": 6000,
+  "Furniture": 10000
+};
+
 
   function showSection(id) {
     console.log("Switching to:", id);
@@ -246,25 +265,49 @@ function uploadDesign() {
 
   reader.readAsDataURL(file);
 }
+  
+ function addOrder() {
+  const name = document.getElementById('orderName').value;
+  const type = document.getElementById('orderType').value;
 
-  function addOrder() {
-    const name = document.getElementById('orderName').value;
-    const type = document.getElementById('orderType').value;
-    if (name) {
-      orders.push({ name, type });
-      const li = document.createElement('li');
-      li.innerText = name + ' – ' + type;
-      document.getElementById('orderList').appendChild(li);
-      document.getElementById('orderCount').innerText = orders.length;
-      document.getElementById('income').innerText = orders.length * 2500;
-      document.getElementById('orderName').value = '';
+  if (!name) return;
+
+  const price = priceMap[type];
+  orders.push({ name, type, price });
+
+  const li = document.createElement('li');
+  li.innerText = `${name} – ${type} – ₹${price}`;
+  document.getElementById('orderList').appendChild(li);
+
+  document.getElementById('orderCount').innerText = orders.length;
+  document.getElementById('income').innerText =
+    orders.reduce((sum, o) => sum + o.price, 0);
+
+  document.getElementById('orderName').value = '';
+}
+
+
+ function calculateSales() {
+  document.getElementById('totalOrders').innerText = orders.length;
+
+  const revenue = orders.reduce((sum, o) => sum + o.price, 0);
+  document.getElementById('revenue').innerText = revenue;
+
+  const count = {};
+  orders.forEach(o => count[o.type] = (count[o.type] || 0) + 1);
+
+  let top = "-";
+  let max = 0;
+  for (let k in count) {
+    if (count[k] > max) {
+      max = count[k];
+      top = k;
     }
   }
 
-  function calculateSales() {
-    document.getElementById('totalOrders').innerText = orders.length;
-    document.getElementById('revenue').innerText = orders.length * 5000;
-  }
+  document.getElementById('topItem').innerText = top;
+}
+
 
   function suggestReuse() {
     const map = {
@@ -278,6 +321,7 @@ function uploadDesign() {
 
 </body>
 </html>
+
 
 
 
