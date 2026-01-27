@@ -108,7 +108,7 @@
   <!-- Info Section -->
   <div class="cards" style="margin-top:20px;">
     <div class="card">
-      <h3><h3>Design Management</h3>
+      <h3>Design Management</h3>
       <p>Allows artisans to digitally upload, store, and manage wood carving designs for easy access and reuse.</p>
     </div>
     <div class="card">
@@ -186,7 +186,6 @@
       Experience: <strong>10+ Years</strong><br>
       Specialization: <strong>Traditional Wood Carving, Furniture, Sculptures</strong>
     </p>
-
     <p>
       Sreekanth is a skilled wood carving artisan with deep knowledge of
       traditional craftsmanship passed down through generations. He specializes
@@ -204,6 +203,7 @@
   let orders = [];
 
   function showSection(id) {
+    console.log("Switching to:", id);
     document.querySelectorAll('.section').forEach(s => s.classList.remove('active'));
     document.getElementById(id).classList.add('active');
   }
@@ -275,6 +275,7 @@ function uploadDesign() {
 
 </body>
 </html>
+
 
 
 
