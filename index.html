@@ -91,7 +91,7 @@
   <button onclick="showSection('dashboard')">Dashboard</button>
   <button onclick="showSection('carpenter')">Carpenter</button>
   <button onclick="showSection('designs')">Designs</button>
-  <button id="ordersBtn" onclick="showSection('orders')" style="display:none;">Orders</button>
+  <button onclick="showSection('orders')">Orders</button>
   <button id="insightsBtn" onclick="showSection('insights')" style="display:none;">Insights</button>
   <button onclick="showSection('waste')">Sustainability</button>
 </nav>
@@ -105,6 +105,10 @@
   <h3>About SmartWood</h3>
   <p>SmartWood is a digital platform designed to support traditional wood carving artisans by integrating modern technology with craftsmanship. The platform helps artisans manage designs, track orders, analyze sales performance, and reduce wood waste efficiently.</p>
 </div>
+  <p id="designCount">🔒</p>
+<p id="orderCount">🔒</p>
+<p>₹<span id="income">🔒</span></p>
+
 
   <!-- Feature Cards -->
   <div class="cards">
@@ -185,7 +189,7 @@
 </div>
 
 <!-- Orders -->
-<div id="orders" class="section private">
+<div id="orders" class="section">
   <div class="card">
     <h3>Smart Orders</h3>
     <input type="text" id="orderName" placeholder="Customer Name" />
@@ -249,9 +253,14 @@ function sellerLogin() {
   if (password === "smartwood123") {
     isSeller = true;
 
-    // Show private buttons
-    document.getElementById("ordersBtn").style.display = "inline-block";
     document.getElementById("insightsBtn").style.display = "inline-block";
+
+    // Reveal totals
+    document.getElementById("orderCount").innerText = orders.length;
+    document.getElementById("designCount").innerText =
+      document.getElementById("designList").children.length;
+    document.getElementById("income").innerText =
+      orders.reduce((sum, o) => sum + o.price, 0);
 
     alert("Seller access enabled");
   } else {
@@ -261,17 +270,20 @@ function sellerLogin() {
 
   function showSection(id) {
 
-  if ((id === 'orders' || id === 'insights') && !isSeller) {
+  // 🔒 Block access to Insights for public users
+  if (id === 'insights' && !isSeller) {
     alert("This section is private");
     return;
   }
 
-  document.querySelectorAll('.section').forEach(s =>
-    s.classList.remove('active')
+  // Switch section normally
+  document.querySelectorAll('.section').forEach(section =>
+    section.classList.remove('active')
   );
 
   document.getElementById(id).classList.add('active');
 }
+
 
 function uploadDesign() {
   const fileInput = document.getElementById("designUpload");
@@ -323,9 +335,7 @@ function uploadDesign() {
   li.innerText = `${name} – ${type} – ₹${price}`;
   document.getElementById('orderList').appendChild(li);
 
-  document.getElementById('orderCount').innerText = orders.length;
-  document.getElementById('income').innerText =
-    orders.reduce((sum, o) => sum + o.price, 0);
+ 
 
   document.getElementById('orderName').value = '';
 }
@@ -365,6 +375,7 @@ function uploadDesign() {
 
 </body>
 </html>
+
 
 
 
