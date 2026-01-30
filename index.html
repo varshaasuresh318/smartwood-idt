@@ -1,4 +1,3 @@
-<!DOCTYPE html>
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
@@ -92,13 +91,15 @@
   <button onclick="showSection('dashboard')">Dashboard</button>
   <button onclick="showSection('carpenter')">Carpenter</button>
   <button onclick="showSection('designs')">Designs</button>
-  <button onclick="showSection('orders')">Orders</button>
-  <button onclick="showSection('insights')">Insights</button>
+  <button id="ordersBtn" onclick="showSection('orders')" style="display:none;">Orders</button>
+  <button id="insightsBtn" onclick="showSection('insights')" style="display:none;">Insights</button>
   <button onclick="showSection('waste')">Sustainability</button>
 </nav>
 
 <!-- Dashboard -->
 <div id="dashboard" class="section active">
+ <button class="action" onclick="sellerLogin()">Seller Login</button>
+
   <!-- Hero Section -->
   <div class="card" style="margin-bottom:20px;">
   <h3>About SmartWood</h3>
@@ -184,7 +185,7 @@
 </div>
 
 <!-- Orders -->
-<div id="orders" class="section">
+<div id="orders" class="section private">
   <div class="card">
     <h3>Smart Orders</h3>
     <input type="text" id="orderName" placeholder="Customer Name" />
@@ -200,7 +201,7 @@
 </div>
 
 <!-- Insights -->
-<div id="insights" class="section">
+<div id="insights" class="section private">
   <div class="card">
     <h3>Sales Insights</h3>
     <p>Total Orders: <span id="totalOrders">0</span></p>
@@ -240,12 +241,38 @@
   "Furniture": 10000
 };
 
+let isSeller = false;
+
+function sellerLogin() {
+  const password = prompt("Enter Seller Password");
+
+  if (password === "smartwood123") {
+    isSeller = true;
+
+    // Show private buttons
+    document.getElementById("ordersBtn").style.display = "inline-block";
+    document.getElementById("insightsBtn").style.display = "inline-block";
+
+    alert("Seller access enabled");
+  } else {
+    alert("Access denied");
+  }
+}
 
   function showSection(id) {
-    console.log("Switching to:", id);
-    document.querySelectorAll('.section').forEach(s => s.classList.remove('active'));
-    document.getElementById(id).classList.add('active');
+
+  if ((id === 'orders' || id === 'insights') && !isSeller) {
+    alert("This section is private");
+    return;
   }
+
+  document.querySelectorAll('.section').forEach(s =>
+    s.classList.remove('active')
+  );
+
+  document.getElementById(id).classList.add('active');
+}
+
 function uploadDesign() {
   const fileInput = document.getElementById("designUpload");
   const file = fileInput.files[0];
@@ -338,6 +365,7 @@ function uploadDesign() {
 
 </body>
 </html>
+
 
 
 
